@@ -192,13 +192,13 @@ python manage.py createsuperuser
 scp $adminset_dir/install/server/adminset.service /usr/lib/systemd/system
 systemctl daemon-reload
 chkconfig adminset on
-service adminset start
+systemctl start adminset 
 
 #安装redis
 echo "####install redis####"
 yum install redis -y
 chkconfig redis on
-service redis start
+systemctl start  redis
 
 # 安装celery
 echo "####install celery####"
@@ -211,8 +211,8 @@ chmod +x $config_dir/celery/start_celery.sh
 systemctl daemon-reload
 chkconfig celery on
 chkconfig beat on
-service celery start
-service beat start
+systemctl start  celery
+systemctl start  beat
 
 # 安装nginx
 echo "####install nginx####"
@@ -220,7 +220,7 @@ yum install nginx -y
 chkconfig nginx on
 scp $adminset_dir/install/server/nginx/adminset.conf /etc/nginx/conf.d
 scp $adminset_dir/install/server/nginx/nginx.conf /etc/nginx
-service nginx start
+systemctl start  nginx
 nginx -s reload
 
 # create ssh config
@@ -237,14 +237,14 @@ scp $adminset_dir/install/server/ssh/config ~/.ssh/config
 # 完成安装
 echo "##############install finished###################"
 systemctl daemon-reload
-service redis restart
-service mariadb restart
-service adminset restart
-service celery restart
-service beat restart
-service mongod restart
-service sshd restart
-service webssh restart
+systemctl restart redis
+systemctl restart mariadb
+systemctl restart adminset
+systemctl restart celery
+systemctl restart beat
+systemctl restart mongod
+systemctl restart sshd
+systemctl restart webssh
 echo "please access website http://server_ip"
 echo "you have installed adminset successfully!!!"
 echo "################################################"
